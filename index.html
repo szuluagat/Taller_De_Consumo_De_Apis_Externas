@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taller de Consumo de APIs — JavaScript Moderno</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════
+       HEADER PRINCIPAL
+  ════════════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-content">
+      <span class="badge">JavaScript Moderno</span>
+      <h1>Taller de Consumo de <em>APIs</em></h1>
+      <p class="subtitle">Async/Await · Fetch · Promesas · Manejo de Errores · DOM</p>
+    </div>
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="galeria">📷 Galería</button>
+      <button class="tab-btn" data-tab="clima">🌤 Clima</button>
+      <button class="tab-btn" data-tab="pokedex">⚡ Pokédex</button>
+    </nav>
+  </header>
+
+  <main class="main-content">
+
+    <!-- ════════════════════════════════════════
+         EJERCICIO 1: GALERÍA DE IMÁGENES
+    ════════════════════════════════════════ -->
+    <section id="tab-galeria" class="tab-panel active">
+      <div class="section-intro">
+        <h2>Ejercicio 1 — <span>Galería de Imágenes</span></h2>
+        <p>Consume <code>JSONPlaceholder /photos</code>. Async/Await + Fetch + Renderizado DOM.</p>
+      </div>
+
+      <div class="controls-bar">
+        <button id="btn-load-gallery" class="btn btn-primary">
+          <span class="btn-icon">⬇</span> Cargar Imágenes
+        </button>
+        <div class="badge-count" id="gallery-count"></div>
+      </div>
+
+      <!-- Estado de carga -->
+      <div id="gallery-loader" class="loader-container hidden">
+        <div class="loader-ring"></div>
+        <p class="loader-text">Obteniendo imágenes desde la API…</p>
+      </div>
+
+      <!-- Mensaje de error -->
+      <div id="gallery-error" class="error-card hidden">
+        <span class="error-icon">⚠</span>
+        <p id="gallery-error-msg">Error al cargar imágenes.</p>
+        <button class="btn btn-sm" onclick="galleryApp.load()">Reintentar</button>
+      </div>
+
+      <!-- Grid de imágenes -->
+      <div id="gallery-grid" class="image-grid"></div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         EJERCICIO 2: APP DEL CLIMA
+    ════════════════════════════════════════ -->
+    <section id="tab-clima" class="tab-panel">
+      <div class="section-intro">
+        <h2>Ejercicio 2 — <span>App del Clima</span></h2>
+        <p>Consume <code>OpenWeatherMap API</code>. Validación de input + mensajes dinámicos.</p>
+      </div>
+
+      <div class="search-box">
+        <div class="input-wrapper">
+          <span class="input-icon">🏙</span>
+          <input
+            type="text"
+            id="city-input"
+            class="text-input"
+            placeholder="Escribe una ciudad... ej: Bogotá"
+            maxlength="60"
+            autocomplete="off"
+          />
+        </div>
+        <button id="btn-search-weather" class="btn btn-primary">
+          Buscar <span class="btn-icon">→</span>
+        </button>
+      </div>
+
+      <!-- Validación -->
+      <p id="weather-validation" class="validation-msg hidden"></p>
+
+      <!-- Loader -->
+      <div id="weather-loader" class="loader-container hidden">
+        <div class="loader-ring"></div>
+        <p class="loader-text">Consultando clima…</p>
+      </div>
+
+      <!-- Error -->
+      <div id="weather-error" class="error-card hidden">
+        <span class="error-icon">⚠</span>
+        <p id="weather-error-msg">Ciudad no encontrada.</p>
+      </div>
+
+      <!-- Tarjeta de clima -->
+      <div id="weather-card" class="weather-card hidden">
+        <div class="weather-header">
+          <div>
+            <h3 id="weather-city">--</h3>
+            <p id="weather-country" class="weather-sub">--</p>
+          </div>
+          <div class="weather-icon-wrap">
+            <img id="weather-icon" src="" alt="Clima" />
+          </div>
+        </div>
+        <div class="weather-body">
+          <div class="weather-temp-big">
+            <span id="weather-temp">--</span>
+            <sup>°C</sup>
+          </div>
+          <p id="weather-desc" class="weather-desc">--</p>
+        </div>
+        <div class="weather-grid">
+          <div class="weather-stat">
+            <span class="stat-label">Sensación</span>
+            <span class="stat-value" id="weather-feels">--°C</span>
+          </div>
+          <div class="weather-stat">
+            <span class="stat-label">Humedad</span>
+            <span class="stat-value" id="weather-humidity">--%</span>
+          </div>
+          <div class="weather-stat">
+            <span class="stat-label">Viento</span>
+            <span class="stat-value" id="weather-wind">-- m/s</span>
+          </div>
+          <div class="weather-stat">
+            <span class="stat-label">Visibilidad</span>
+            <span class="stat-value" id="weather-visibility">-- km</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nota sobre API Key -->
+      <div class="api-note">
+        <strong>📌 Nota:</strong> Para usar la App del Clima necesitas una API Key gratuita de
+        <a href="https://openweathermap.org/api" target="_blank" rel="noopener">OpenWeatherMap</a>.
+        Reemplaza <code>YOUR_API_KEY</code> en <code>app-clima.js</code>.
+        Mientras tanto el ejercicio opera en <em>modo demo</em> con datos simulados.
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         EJERCICIO 3: POKÉDEX
+    ════════════════════════════════════════ -->
+    <section id="tab-pokedex" class="tab-panel">
+      <div class="section-intro">
+        <h2>Ejercicio 3 — <span>Pokédex</span></h2>
+        <p>Consume <code>PokeAPI</code>. Búsqueda dinámica + tarjeta de datos + loader.</p>
+      </div>
+
+      <div class="search-box">
+        <div class="input-wrapper">
+          <span class="input-icon">⚡</span>
+          <input
+            type="text"
+            id="pokemon-input"
+            class="text-input"
+            placeholder="Nombre o número… ej: pikachu, 25"
+            maxlength="30"
+            autocomplete="off"
+          />
+        </div>
+        <button id="btn-search-pokemon" class="btn btn-pokemon">
+          Buscar <span class="btn-icon">→</span>
+        </button>
+      </div>
+
+      <p id="pokemon-validation" class="validation-msg hidden"></p>
+
+      <!-- Loader -->
+      <div id="pokemon-loader" class="loader-container hidden">
+        <div class="loader-ring loader-pokemon"></div>
+        <p class="loader-text">Buscando en la Pokédex…</p>
+      </div>
+
+      <!-- Error -->
+      <div id="pokemon-error" class="error-card hidden">
+        <span class="error-icon">⚠</span>
+        <p id="pokemon-error-msg">Pokémon no encontrado.</p>
+      </div>
+
+      <!-- Tarjeta pokémon -->
+      <div id="pokemon-card" class="pokemon-card hidden">
+        <div class="pokemon-header">
+          <div class="pokemon-img-wrap">
+            <img id="pokemon-img" src="" alt="Pokémon" />
+          </div>
+          <div class="pokemon-identity">
+            <span id="pokemon-id" class="pokemon-id">#---</span>
+            <h3 id="pokemon-name">--</h3>
+            <div id="pokemon-types" class="pokemon-types"></div>
+          </div>
+        </div>
+        <div class="pokemon-stats-grid">
+          <div class="pstat">
+            <span class="pstat-label">Altura</span>
+            <span class="pstat-value" id="pokemon-height">--</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-label">Peso</span>
+            <span class="pstat-value" id="pokemon-weight">--</span>
+          </div>
+        </div>
+        <div class="pokemon-abilities">
+          <h4>Habilidades</h4>
+          <div id="pokemon-abilities-list" class="abilities-tags"></div>
+        </div>
+        <div class="pokemon-base-stats">
+          <h4>Estadísticas Base</h4>
+          <div id="pokemon-stats-bars" class="stats-bars"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Taller de APIs · JavaScript Moderno · Fetch · Async/Await · DOM</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="app-galeria.js"></script>
+  <script src="app-clima.js"></script>
+  <script src="app-pokedex.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
